@@ -73,7 +73,8 @@ def convertUser(data):
 			'last_name' : data['last_name'],
 			'phone' : data['phone'],
 			'created' : data['created'],
-			'updated' : data['updated']
+			'updated' : data['updated'],
+			'device_token' :  data.get('device_token', '')
 		}
 
 
