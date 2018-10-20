@@ -13,7 +13,7 @@ def send_push_message(db, username, message, extra=None):
 		{
 		"username" : username
 		})
-	if device_token in user:
+	if 'device_token' in user:
 		response = PushClient().publish(
 				PushMessage(to=user['device_token'],
 					body = message,
@@ -24,7 +24,7 @@ def send_push_message(db, username, message, extra=None):
 			# This call raises errors so we can handle them with normal exception
 			# flows.
 			response.validate_response()
-    		except DeviceNotRegisteredError:
+		except DeviceNotRegisteredError:
 			# Mark the push token as inactive
 			print("device is not registered")
 		except PushResponseError as exc:
@@ -32,4 +32,4 @@ def send_push_message(db, username, message, extra=None):
 				
 	else:
 		print("Cannot send the push notification to {}".format(username))
-	
+	return "Hello"
