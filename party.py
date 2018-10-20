@@ -1,6 +1,7 @@
 import datetime
 from bson.objectid import ObjectId
-from restaurant import initialize_restaurants, get_restaurants_for_party
+from restaurant import initialize_restaurants
+from notification import send_notifications_to_attendes
 
 
 def create(party, db):
@@ -14,6 +15,7 @@ def create(party, db):
 
 	addUserParties(party, createdParty.inserted_id, db)
 	initialize_restaurants(db, createdParty)
+	send_notifications_to_attendes(db, createdParty)
 
 
 def getPartiesByUser(username, db):
