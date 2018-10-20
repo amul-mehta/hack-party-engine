@@ -13,13 +13,25 @@ def createNewUser(user, db):
 
 def login(details, db):
 	users = db['user']
-	user = users.find_one(
-		{
-		"username": details['username'],
-		"password" : details['password']
-		})
+	# Token is used for push notifications
+	if 'token' in details:
+		user = users.find_one_and_update(
+			{
+			"username": details['username'],
+			"password" : details['password']
+			},
+			{
+			'$set' : { 'device_token' : details['token']} 
+			})
+		return user
+	else:
+		user = users.find_one(
+                        {
+                        "username": details['username'],
+                        "password" : details['password']
+                        })
 
-	return user
+		return user
 
 def update(user, db):
 	users = db['user']
