@@ -18,11 +18,8 @@ def connect():
 	res = []
 
 	for user in cols: 
-
 		t = convertUser(user)
-
 		res.append(t)
-
 
 	return jsonify(res)
 
@@ -44,6 +41,15 @@ def loginUser():
 		return jsonify(message="User not found"), 404
 
 
+@app.route("/api/user/update", methods=['POST'])
+def updateUser():
+	if (checkUser(request.json, db)) != None:
+		update(request.json, db)
+		return jsonify(message="User updated successfully")
+	else:
+		return jsonify(message="User could not be updated"), 400
+
+
 def convertUser(data):
 		return {
 			'id' : str(data['_id']),
@@ -51,7 +57,8 @@ def convertUser(data):
 			'first_name' : data['first_name'],
 			'last_name' : data['last_name'],
 			'phone' : data['phone'],
-			'created' : data['created']
+			'created' : data['created'],
+			'updated' : data['updated']
 		}
 
 
