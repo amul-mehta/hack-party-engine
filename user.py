@@ -22,6 +22,10 @@ def login(details, db):
 			},
 			{
 			'$set' : { 'device_token' : details['token']} 
+			}
+			,
+			{
+			upsert: True
 			})
 		return user
 	else:
