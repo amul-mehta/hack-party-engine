@@ -8,7 +8,7 @@ def create(party, db):
 	party['updated'] = datetime.datetime.utcnow()
 	createdParty = parties.insert_one(party)
 
-	party['attendees'].append(party['host_name'])
+	party['attendees'][party['host_name']] = True
 
 	addUserParties(party, createdParty.inserted_id, db)
 
@@ -27,10 +27,31 @@ def getPartiesByUser(username, db):
 
 	return res
 
+def response(response, db):
+	parties = db['party']
+	userParties = db['user_parties']
+
+	parties.update_one(
+		{'_id' : ObjectId(response['partyId'])},
+		{
+			'$set' : {
+				'attendees.{}'.format(response['responder']) : response['response']
+			},
+			"$currentDate":{"updated":True}
+		})
+
+	if response['response'] == False:
+		userParties.update_one(
+    			{ "username" : response['responder']},
+			    { '$pull': { 'parties': { '$in' : [response['partyId']] }}
+			    })
+
+
+
 def addUserParties(party, partyId, db):
 	userParties = db['user_parties']
 
-	for username in party['attendees']:
+	for username in party['attendees'].keys():
 		if userParties.find_one({'username' : username}) == None:
 			rel = {
 				"username"  : username,
