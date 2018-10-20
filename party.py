@@ -12,10 +12,11 @@ def create(party, db):
 	createdParty = parties.insert_one(party)
 
 	party['attendees'][party['host_name']] = True
+	party['_id'] = createdParty.inserted_id
 
 	addUserParties(party, createdParty.inserted_id, db)
-	initialize_restaurants(db, createdParty)
-	send_notifications_to_attendes(db, createdParty)
+	initialize_restaurants(db, party)
+	send_notifications_to_attendes(db, party)
 
 
 def getPartiesByUser(username, db):
@@ -29,6 +30,11 @@ def getPartiesByUser(username, db):
 		for up in userParties["parties"]:
 			party = parties.find_one({'_id' : ObjectId(up)})
 			party["_id"] = str(party["_id"])
+			if party['host_name'] == username:
+				party['attending'] = True
+			else:
+				party['attending'] = party['attendees'][username]
+
 			res.append(party)
 
 	return res
