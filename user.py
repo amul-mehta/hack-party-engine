@@ -1,9 +1,9 @@
 import datetime
+from bson.objectid import ObjectId
 
-def checkUser(user, db):
+def findUserByName(username, db):
 	users = db['user']
-	return users.find_one({'username' : user['username']})
-
+	return users.find_one({'username' : username})
 
 def createNewUser(user, db):
 	users = db['user']

@@ -1,6 +1,7 @@
 from flask import Flask, request, json, jsonify
 from database import initializeDatabase
 from user import *
+from party import *
 
 app = Flask(__name__)
 
@@ -25,7 +26,7 @@ def connect():
 
 @app.route("/api/user/create", methods=['POST'])
 def createUser():
-	if checkUser(request.json, db) == None:
+	if findUserByName(request.json["username"], db) == None:
 		createNewUser(request.json, db)
 		return jsonify(message="User successfully created")
 	else:
@@ -43,11 +44,25 @@ def loginUser():
 
 @app.route("/api/user/update", methods=['POST'])
 def updateUser():
-	if (checkUser(request.json, db)) != None:
+	if (findUserByName(request.json["username"], db)) != None:
 		update(request.json, db)
 		return jsonify(message="User updated successfully")
 	else:
 		return jsonify(message="User could not be updated"), 400
+
+
+@app.route("/api/party/create", methods=['POST'])
+def createParty():
+	if findUserByName(request.json["host_name"], db):
+		create(request.json, db)
+		return jsonify(message="party created successfully")
+	else:
+		return jsonify(message="User not found"), 404
+
+
+@app.route("/api/party/find/<username>", methods=['GET'])
+def findParties(username):
+	return jsonify(getPartiesByUser(username, db))
 
 
 def convertUser(data):
