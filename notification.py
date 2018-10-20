@@ -7,7 +7,7 @@ from requests.exceptions import ConnectionError
 from requests.exceptions import HTTPError
 
 
-def send_push_message(db, username, message, extra=None):
+def send_push_message(db, username, message, title,data=None):
 	users = db['user']
 	user = users.find_one(
 		{
@@ -17,7 +17,13 @@ def send_push_message(db, username, message, extra=None):
 		response = PushClient().publish(
 				PushMessage(to=user['device_token'],
 					body = message,
-					data = extra)
+					data = data,
+					sound = 'default',
+					title = title,
+					ttl = 500,
+					priority = 'high',
+
+					)
 				)
 		try:
 			# We got a response back, but we don't know whether it's an error yet
@@ -33,3 +39,11 @@ def send_push_message(db, username, message, extra=None):
 	else:
 		print("Cannot send the push notification to {}".format(username))
 	return "Hello"
+	
+def send_notifications_to_attendes(db, party):
+	message = "You are invited to the party by {}! WOHOOO!!!".format(party['host_name'])
+	attendees = party['attendees']
+	for attendee, _ in attendees.items():
+		print("sending notification to {}".format(attendee))
+		send_push_message(db,attendee,message,'<<~~>> HACK PARTY <<~~>>',party)
+		

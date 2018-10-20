@@ -71,7 +71,7 @@ def partyResponse():
 	return jsonify(message="response reported")
 
 def convertUser(data):
-		return {
+	return {
 			'id' : str(data['_id']),
 			'username' : data['username'],
 			'first_name' : data['first_name'],
