@@ -6,7 +6,7 @@ url ='https://maps.googleapis.com/maps/api/place/textsearch/json'
 
 def get_nearby_restaurants(lat,lon):
 	q = 'food near me'
-	params = { 'location' : ','.join([lat,lon]), 'radius' : 5000, 'type' : 'food', 'query': q, 'key' : API_KEY}
+	params = { 'location' : ','.join([str(lat),str(lon)]), 'radius' : 5000, 'type' : 'food', 'query': q, 'key' : API_KEY}
 	contents = requests.get(url, params=params)
 	if contents.status_code == 200:
 		res = []

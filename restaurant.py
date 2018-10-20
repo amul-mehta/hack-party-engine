@@ -22,6 +22,7 @@ Restaurant_parties:
 
 
 def initialize_restaurants(db, party):
+	print(party)
 	location = party['location']
 	lat = location['lat']
 	lon = location['lng']
@@ -32,8 +33,8 @@ def initialize_restaurants(db, party):
 		r['party_id'] = party['_id']
 		r_list.append(r)	
 	collection = db['restaurants']
-	
-	collection.insert_many(r_list)
+	if not r_list:
+		collection.insert_many(r_list)
 
 def update_restaurant_for_user(db, restaurant, user, party):
 	res_part = db['restaurant_parties']

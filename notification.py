@@ -8,6 +8,9 @@ from requests.exceptions import HTTPError
 
 
 def send_push_message(db, username, message, title,data=None):
+	data['created'] = str(data['created'])
+	data['updated'] = str(data['updated'])
+	data['_id'] = str(data['_id'])
 	users = db['user']
 	user = users.find_one(
 		{
