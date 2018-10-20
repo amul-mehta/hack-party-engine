@@ -58,10 +58,5 @@ def convertUser(data):
 			'last_name' : data['last_name'],
 			'phone' : data['phone'],
 			'created' : data['created'],
-			'updated' : data['updated']
+			'updated' : data['updatedx']
 		}
-
-
-if __name__ == '__main__':
-	db = initializeDatabase()
-	app.run(host='0.0.0.0', debug=True)
