@@ -33,7 +33,7 @@ def initialize_restaurants(db, party):
 		r['party_id'] = party['_id']
 		r_list.append(r)	
 	collection = db['restaurants']
-	if not r_list:
+	if r_list:
 		collection.insert_many(r_list)
 
 def update_restaurant_for_user(db, restaurant, user, party):
