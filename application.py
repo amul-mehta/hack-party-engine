@@ -70,6 +70,15 @@ def partyResponse():
 	response(request.json, db)
 	return jsonify(message="response reported")
 
+@app.route("/api/party/find/one/<partyId>", methods=['GET'])
+def getParty(partyId):
+	res = getPartyByPartyId(partyId, db)
+	if res != None:
+		res['_id'] = str(res['_id'])
+		return jsonify(res)
+	else:
+		return jsonify(message="Party not found"), 404
+
 def convertUser(data):
 	return {
 			'id' : str(data['_id']),

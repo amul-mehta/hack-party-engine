@@ -39,6 +39,11 @@ def getPartiesByUser(username, db):
 
 	return res
 
+
+def getPartyByPartyId(partyId, db):
+	parties = db['party']
+	return parties.find_one({'_id' : ObjectId(partyId)})
+
 def response(response, db):
 	parties = db['party']
 	userParties = db['user_parties']
