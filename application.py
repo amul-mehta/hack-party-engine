@@ -65,6 +65,11 @@ def findParties(username):
 	return jsonify(getPartiesByUser(username, db))
 
 
+@app.route("/api/party/response", methods=['POST'])
+def partyResponse():
+	response(request.json, db)
+	return jsonify(message="response reported")
+
 def convertUser(data):
 		return {
 			'id' : str(data['_id']),
