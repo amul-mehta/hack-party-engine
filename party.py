@@ -1,5 +1,7 @@
 import datetime
 from bson.objectid import ObjectId
+from restaurant import initialize_restaurants, get_restaurants_for_party
+
 
 def create(party, db):
 	parties = db['party']
@@ -11,6 +13,8 @@ def create(party, db):
 	party['attendees'][party['host_name']] = True
 
 	addUserParties(party, createdParty.inserted_id, db)
+	initialize_restaurants(db, createdParty)
+
 
 def getPartiesByUser(username, db):
 	res = []
