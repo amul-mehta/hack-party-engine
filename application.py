@@ -2,6 +2,7 @@ from flask import Flask, request, json, jsonify
 from database import initializeDatabase
 from user import *
 from party import *
+from restaurant import update_restaurant_for_user,get_restaurants_for_party_by_user
 
 app = Flask(__name__)
 
@@ -70,6 +71,7 @@ def partyResponse():
 	response(request.json, db)
 	return jsonify(message="response reported")
 
+
 @app.route("/api/party/find/one/<partyId>", methods=['GET'])
 def getParty(partyId):
 	res = getPartyByPartyId(partyId, db)
@@ -78,6 +80,18 @@ def getParty(partyId):
 		return jsonify(res)
 	else:
 		return jsonify(message="Party not found"), 404
+
+@app.route('/api/restaurants/update', methods=['POST'])
+def updateRestaurant():
+	update_restaurant_for_user(
+		db,request.json['restaurant_id'],
+		request.json['user_id'], request.json['party_id']
+	)
+	return jsonify(message="Restaurant choice updated")
+
+@app.route('/api/restaurants/<party_id>/<user_id>', methods = ['GET'])
+def getRestaurantsByUserAndParty():
+	return jsonify(get_restaurants_for_party_by_user(db,party_id,user_id))
 
 def convertUser(data):
 	return {
