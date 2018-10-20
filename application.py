@@ -4,7 +4,7 @@ from user import *
 
 app = Flask(__name__)
 
-db = None
+db = initializeDatabase()
 
 @app.route("/", methods=['GET'])
 def hello():
@@ -58,5 +58,9 @@ def convertUser(data):
 			'last_name' : data['last_name'],
 			'phone' : data['phone'],
 			'created' : data['created'],
-			'updated' : data['updatedx']
+			'updated' : data['updated']
 		}
+
+
+if __name__ == '__main__':
+	app.run(host='0.0.0.0', debug=True)
