@@ -25,9 +25,14 @@ def login(details, db):
 			}
 			,
 			{
-			upsert: True
+			'upsert': True,
+			'returnNewDocument' : True
 			})
-		return user
+
+		if '_id' in user:
+			return findUserByName(details['username'], db)
+		else:
+			return {}
 	else:
 		user = users.find_one(
                         {

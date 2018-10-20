@@ -19,11 +19,12 @@ def getPartiesByUser(username, db):
 
 	userParties = userParties.find_one({'username' : username})
 
-	for up in userParties["parties"]:
-		party = parties.find_one({'_id' : ObjectId(up)})
-		party["_id"] = str(party["_id"])
-		res.append(party)
-		
+	if userParties:
+		for up in userParties["parties"]:
+			party = parties.find_one({'_id' : ObjectId(up)})
+			party["_id"] = str(party["_id"])
+			res.append(party)
+
 	return res
 
 def addUserParties(party, partyId, db):
