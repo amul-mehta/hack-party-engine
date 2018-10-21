@@ -2,6 +2,7 @@ from flask import Flask, request, json, jsonify
 from database import initializeDatabase
 from user import *
 from party import *
+from restaurants import getRestaurantsByPartyId
 
 app = Flask(__name__)
 
@@ -78,6 +79,16 @@ def getParty(partyId):
 		return jsonify(res)
 	else:
 		return jsonify(message="Party not found"), 404
+
+
+@app.route("/api/restaurant/find/<partyId>")
+def getRestaurantsForParty(partyId):
+	res = getRestaurantsByPartyId(partyId, db)
+	if res != None:
+		return jsonify(res)
+	else:
+		return jsonify(message="Party not found"), 404
+	
 
 def convertUser(data):
 	return {

@@ -20,7 +20,6 @@ Restaurant_parties:
 
 """
 
-
 def initialize_restaurants(db, party):
 	print(party)
 	location = party['location']
@@ -54,5 +53,17 @@ def get_restaurants_for_party_by_user(db, party_id, username):
 		r['_id'] = str(party['_id'])
 		result.append(r)
 	return result
+
+
+def getRestaurantsByPartyId(partyId, db):
+	restaurants = db['restaurants']
+	res = estaurants.find({'party_id' : ObjectId(partyId)})
+	
+	for i in res:
+		i["_id"]  = str(i["_id"])
+		i["party_id"]  = str(i["party_id"])
+
+	return res
+
 	
 	
